@@ -52,19 +52,52 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Settings Header'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+            ),
+            ListTile(
+              title: Text('Item 1'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Item 2'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Item 3'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: Text('Weathery'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              // TODO:
-            },
-          ),
-          IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              // TODO:
+              // Search for other cities weather
+              // ...
             },
           ),
         ],
@@ -84,39 +117,7 @@ class _LocationScreenState extends State<LocationScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () async {
-                      var weatherData = await weather.getLocationWeather();
-                      updateUI(weatherData);
-                    },
-                    child: Icon(
-                      Icons.near_me,
-                      size: 50.0,
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: () async {
-                      var typedName = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CityScreen(),
-                          ));
-                      if (typedName != null) {
-                        var weatherData =
-                            await weather.getCityWeather(typedName);
-                        updateUI(weatherData);
-                      }
-                    },
-                    child: Icon(
-                      Icons.search,
-                      size: 30.0,
-                    ),
-                  ),
-                ],
-              ),
+              
               Padding(
                 padding: EdgeInsets.only(left: 15.0),
                 child: Row(
