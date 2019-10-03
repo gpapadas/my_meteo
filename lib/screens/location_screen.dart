@@ -1,6 +1,7 @@
-import 'package:my_meteo/services/weather.dart';
 import 'package:flutter/material.dart';
+import 'package:my_meteo/services/weather.dart';
 import 'package:my_meteo/utilities/constants.dart';
+import 'package:my_meteo/screens/navigation_screen.dart';
 import 'city_screen.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -54,40 +55,7 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Text('Settings Header'),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-            ),
-            ListTile(
-              title: Text('Item 1'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: Text('Item 3'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: NavigationScreen(),
       appBar: AppBar(
         title: Text('My Meteo'),
         actions: <Widget>[
