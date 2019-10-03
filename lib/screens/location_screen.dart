@@ -17,6 +17,7 @@ class _LocationScreenState extends State<LocationScreen> {
   String weatherIcon;
   String weatherMessage;
   String cityName;
+  String description;
   String inWord = 'in ';
 
   WeatherModel weather = WeatherModel();
@@ -45,6 +46,7 @@ class _LocationScreenState extends State<LocationScreen> {
       var condition = weatherData['weather'][0]['id'];
       weatherIcon = weather.getWeatherIcon(condition);
 
+      description = weatherData['weather'][0]['description'];
       cityName = weatherData['name'];
     });
   }
@@ -87,7 +89,7 @@ class _LocationScreenState extends State<LocationScreen> {
         ),
       ),
       appBar: AppBar(
-        title: Text('Weathery'),
+        title: Text('My Meteo'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -117,15 +119,21 @@ class _LocationScreenState extends State<LocationScreen> {
                 padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
+                    Image(
+                      image: AssetImage('images/$weatherIcon'),
+                    ),
                     Text(
                       '$temperature°',
                       style: kTempTextStyle,
                     ),
-                    Text(
-                      weatherIcon,
-                      style: kConditionTextStyle,
-                    ),
                   ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 15.0),
+                child: Text(
+                  '$description',
+                  style: kMessageTextStyle,
                 ),
               ),
               Padding(
