@@ -41,7 +41,7 @@ class WeatherModel {
     } else if (condition == 800) {
       return '☀️';
     } else if (condition <= 804) {
-      return '1cloud_norain.png';
+      return 'Cloud.svg';
       //return '☁️';
     } else {
       return '🤷‍';

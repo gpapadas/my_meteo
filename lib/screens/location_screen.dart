@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_meteo/services/weather.dart';
 import 'package:my_meteo/utilities/constants.dart';
 import 'package:my_meteo/screens/navigation_screen.dart';
@@ -87,6 +88,11 @@ class _LocationScreenState extends State<LocationScreen> {
                 padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
+                    SvgPicture.asset(
+  'images/$weatherIcon',
+  color: Colors.white,
+  semanticsLabel: 'Acme Logo'
+),
                     Image(
                       image: AssetImage('images/$weatherIcon'),
                     ),
