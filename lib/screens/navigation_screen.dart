@@ -20,8 +20,9 @@ class NavigationScreen extends StatelessWidget {
           ListTile(
             title: Text('Item 1'),
             onTap: () {
-              // Update the state of the app.
+              // TODO: Update the state of the app.
               // ...
+
               // Then close the drawer.
               // Navigator.pop(context);
             },
@@ -29,8 +30,9 @@ class NavigationScreen extends StatelessWidget {
           ListTile(
             title: Text('Item 2'),
             onTap: () {
-              // Update the state of the app.
+              // TODO: Update the state of the app.
               // ...
+
               // Then close the drawer.
               // Navigator.pop(context);
             },
@@ -38,8 +40,9 @@ class NavigationScreen extends StatelessWidget {
           ListTile(
             title: Text('Item 3'),
             onTap: () {
-              // Update the state of the app.
+              // TODO: Update the state of the app.
               // ...
+              
               // Then close the drawer.
               // Navigator.pop(context);
             },

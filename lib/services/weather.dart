@@ -1,13 +1,13 @@
 import 'package:my_meteo/services/location.dart';
 import 'package:my_meteo/services/networking.dart';
+import 'package:my_meteo/utilities/apikey.dart';
 
-const apiKey = 'bdc1f0911127ae9b04c8d65b7e45cb9d';
 const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather';
 
 class WeatherModel {
   Future<dynamic> getCityWeather(String city) async {
     NetworkHelper networkHelper = NetworkHelper(
-        '$openWeatherMapURL?q=$city&appid=$apiKey&units=metric');
+        '$openWeatherMapURL?q=$city&appid=$kApiKey&units=metric');
 
     var weatherData = await networkHelper.getData();
 
@@ -20,7 +20,7 @@ class WeatherModel {
     await location.getCurrentLocation();
 
     NetworkHelper networkHelper = NetworkHelper(
-        '$openWeatherMapURL?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric');
+        '$openWeatherMapURL?lat=${location.latitude}&lon=${location.longitude}&appid=$kApiKey&units=metric');
 
     var weatherData = await networkHelper.getData();
 
@@ -28,35 +28,15 @@ class WeatherModel {
   }
 
   String getWeatherIcon(int condition) {
-    if (condition < 300) {
-      return '🌩';
-    } else if (condition < 400) {
-      return '🌧';
-    } else if (condition < 600) {
-      return '☔️';
-    } else if (condition < 700) {
-      return '☃️';
-    } else if (condition < 800) {
-      return '🌫';
+    if (condition >= 500 && condition < 600) {
+      return 'Cloud-Rain.svg';
+    } else if (condition >= 600 && condition < 700) {
+      return 'Cloud-Snow.svg';
     } else if (condition == 800) {
-      return '☀️';
-    } else if (condition <= 804) {
+      return 'Sun.svg';
+    } else if (condition == 801) {
       return 'Cloud.svg';
-      //return '☁️';
-    } else {
-      return '🤷‍';
     }
-  }
-
-  String getMessage(int temp) {
-    if (temp > 25) {
-      return 'It\'s 🍦 time';
-    } else if (temp > 20) {
-      return 'Time for shorts and 👕';
-    } else if (temp < 10) {
-      return 'You\'ll need 🧣 and 🧤';
-    } else {
-      return 'Bring a 🧥 just in case';
-    }
+    return 'Sun.svg';
   }
 }
