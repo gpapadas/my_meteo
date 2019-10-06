@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:my_meteo/services/weather.dart';
 import 'package:my_meteo/utilities/constants.dart';
 import 'package:my_meteo/screens/navigation_screen.dart';
-import 'city_screen.dart';
 
 class LocationScreen extends StatefulWidget {
   LocationScreen({this.locationWeather});
@@ -40,6 +39,7 @@ class _LocationScreenState extends State<LocationScreen> {
         cityName = '';
         return;
       }
+
       double temp = weatherData['main']['temp'].toDouble();
       temperature = temp.toInt();
 
@@ -86,66 +86,79 @@ class _LocationScreenState extends State<LocationScreen> {
         //   ),
         // ),
         // constraints: BoxConstraints.expand(),
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 15.0, top: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Icon(Icons.location_on),
-                    Text(
-                      '$cityName',
-                      style: kMessageTextStyle,
-                    ),
-                    SizedBox(
-                      width: 15.0,
-                    ),
-                    Icon(
-                      Icons.wb_sunny,
-                      size: 20.0,
-                    ),
-                    Icon(
-                      Icons.arrow_drop_up,
-                      size: 20.0,
-                    ),
-                    Text('$sunrise', style: kTimeTextStyle),
-                    Icon(
-                      Icons.arrow_drop_down,
-                      size: 20.0,
-                    ),
-                    Text('$sunset', style: kTimeTextStyle),
-                  ],
-                ),
-              ),
-              Row(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  SvgPicture.asset(
-                    'images/$weatherIcon',
-                    color: Colors.white,
-                    width: 170.0,
+                  Padding(
+                    padding: EdgeInsets.only(left: 15.0, top: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Icon(Icons.location_on),
+                        Text(
+                          '$cityName',
+                          style: kMessageTextStyle,
+                        ),
+                        SizedBox(
+                          width: 15.0,
+                        ),
+                        Icon(
+                          Icons.wb_sunny,
+                          size: 20.0,
+                        ),
+                        Icon(
+                          Icons.arrow_drop_up,
+                          size: 20.0,
+                        ),
+                        Text('$sunrise', style: kTimeTextStyle),
+                        Icon(
+                          Icons.arrow_drop_down,
+                          size: 20.0,
+                        ),
+                        Text('$sunset', style: kTimeTextStyle),
+                      ],
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: <Widget>[
-                      Text(
-                        '$temperature°',
-                        style: kTempTextStyle,
+                      SvgPicture.asset(
+                        'images/$weatherIcon',
+                        color: Colors.white,
+                        width: 170.0,
                       ),
-                      Text(
-                        '$description',
-                        style: kMessageTextStyle,
-                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            '$temperature°',
+                            style: kTempTextStyle,
+                          ),
+                          Text(
+                            '$description',
+                            style: kMessageTextStyle,
+                          ),
+                        ],
+                      )
                     ],
-                  )
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Column(
+                children: <Widget>[
+                  Text('Hourly forecast list'),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
