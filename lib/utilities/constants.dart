@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 
 const kTempTextStyle = TextStyle(
-  fontFamily: 'Spartan MB',
-  fontSize: 50.0,
+  //fontFamily: 'Spartan MB',
+  fontSize: 60.0,
 );
 
 const kMessageTextStyle = TextStyle(
-  fontFamily: 'Spartan MB',
-  fontSize: 40.0,
+  //fontFamily: 'Spartan MB',
+  fontSize: 20.0,
+  //fontWeight: FontWeight.w200,
+);
+
+const kTimeTextStyle = TextStyle(
+  //fontFamily: 'Spartan MB',
+  fontSize: 15.0,
 );
 
 const kButtonTextStyle = TextStyle(
   fontSize: 30.0,
-  fontFamily: 'Spartan MB',
+  //fontFamily: 'Spartan MB',
 );
 
 const kConditionTextStyle = TextStyle(
@@ -35,3 +41,5 @@ const kTextFieldInputDecoration = InputDecoration(
     borderSide: BorderSide.none,
   ),
 );
+
+const kBackgroundColor = Color(0xFF000C2E);
