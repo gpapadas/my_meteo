@@ -6,15 +6,17 @@ import 'package:my_meteo/utilities/constants.dart';
 import 'package:my_meteo/screens/navigation_screen.dart';
 
 class LocationScreen extends StatefulWidget {
-  LocationScreen({this.locationWeather});
+  LocationScreen({this.locationWeather, this.locationForecast});
 
   final locationWeather;
+  final locationForecast;
 
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  // Weather variables
   int temperature;
   String weatherIcon;
   String cityName;
@@ -22,16 +24,20 @@ class _LocationScreenState extends State<LocationScreen> {
   String sunrise;
   String sunset;
 
+  // Forecast variables
+  double tempMin;
+  double tempMax;
+
   WeatherModel weather = WeatherModel();
 
   @override
   void initState() {
     super.initState();
 
-    updateUI(widget.locationWeather);
+    updateUI(widget.locationWeather, widget.locationForecast);
   }
 
-  void updateUI(dynamic weatherData) {
+  void updateUI(dynamic weatherData, dynamic forecastData) {
     setState(() {
       if (weatherData == null) {
         temperature = 0;
@@ -40,6 +46,7 @@ class _LocationScreenState extends State<LocationScreen> {
         return;
       }
 
+      // Current weather data.
       double temp = weatherData['main']['temp'].toDouble();
       temperature = temp.toInt();
 
@@ -55,6 +62,15 @@ class _LocationScreenState extends State<LocationScreen> {
           .format(DateTime.fromMillisecondsSinceEpoch(sunriseUnix * 1000));
       sunset = DateFormat('hh:mm a')
           .format(DateTime.fromMillisecondsSinceEpoch(sunsetUnix * 1000));
+
+      // Hourly forecast data.
+      //dt = Time of data forecasted, unix, UTC
+      for (var forecast in forecastData['list']) {
+        tempMin = forecast['main']['temp_min'].toDouble();
+        tempMax = forecast['main']['temp_max'].toDouble();
+      }
+      //double tempMin = forecastData['list'][0]['main']['temp_min'].toDouble();
+      
     });
   }
 
@@ -151,13 +167,29 @@ class _LocationScreenState extends State<LocationScreen> {
               ),
             ),
             Expanded(
-              flex: 2,
-              child: Column(
-                children: <Widget>[
-                  Text('Hourly forecast list'),
-                ],
-              ),
-            ),
+                flex: 2,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        SvgPicture.asset(
+                          'images/$weatherIcon',
+                          color: Colors.white,
+                          width: 50.0,
+                        ),
+                        Text('25'),
+                        Text('18'),
+                      ],
+                    ),
+                  ],
+                )
+                // child: Column(
+                //   children: <Widget>[
+                //     Text('Hourly forecast list'),
+                //   ],
+                // ),
+                ),
           ],
         ),
       ),

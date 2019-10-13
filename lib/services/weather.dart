@@ -2,12 +2,14 @@ import 'package:my_meteo/services/location.dart';
 import 'package:my_meteo/services/networking.dart';
 import 'package:my_meteo/utilities/apikey.dart';
 
-const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather';
+const apiURLWeather = 'https://api.openweathermap.org/data/2.5/weather';
+const apiURLForecast = 'https://api.openweathermap.org/data/2.5/forecast';
 
 class WeatherModel {
+
   Future<dynamic> getCityWeather(String city) async {
     NetworkHelper networkHelper = NetworkHelper(
-        '$openWeatherMapURL?q=$city&appid=$kApiKey&units=metric');
+        '$apiURLWeather?q=$city&appid=$kApiKey&units=metric');
 
     var weatherData = await networkHelper.getData();
 
@@ -20,11 +22,24 @@ class WeatherModel {
     await location.getCurrentLocation();
 
     NetworkHelper networkHelper = NetworkHelper(
-        '$openWeatherMapURL?lat=${location.latitude}&lon=${location.longitude}&appid=$kApiKey&units=metric');
+        '$apiURLWeather?lat=${location.latitude}&lon=${location.longitude}&appid=$kApiKey&units=metric');
 
     var weatherData = await networkHelper.getData();
 
     return weatherData;
+  }
+
+  Future<dynamic> getLocationForecast() async {
+    Location location = Location();
+
+    await location.getCurrentLocation();
+
+    NetworkHelper networkHelper = NetworkHelper(
+        '$apiURLForecast?lat=${location.latitude}&lon=${location.longitude}&appid=$kApiKey&units=metric');
+
+    var forecastData = await networkHelper.getData();
+
+    return forecastData;
   }
 
   String getWeatherIcon(int condition) {
