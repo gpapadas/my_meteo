@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:my_meteo/services/location.dart';
 import 'package:my_meteo/services/networking.dart';
 import 'package:my_meteo/utilities/apikey.dart';
@@ -6,10 +7,9 @@ const apiURLWeather = 'https://api.openweathermap.org/data/2.5/weather';
 const apiURLForecast = 'https://api.openweathermap.org/data/2.5/forecast';
 
 class WeatherModel {
-
   Future<dynamic> getCityWeather(String city) async {
-    NetworkHelper networkHelper = NetworkHelper(
-        '$apiURLWeather?q=$city&appid=$kApiKey&units=metric');
+    NetworkHelper networkHelper =
+        NetworkHelper('$apiURLWeather?q=$city&appid=$kApiKey&units=metric');
 
     var weatherData = await networkHelper.getData();
 
@@ -42,13 +42,29 @@ class WeatherModel {
     return forecastData;
   }
 
-  String getWeatherIcon(int condition) {
-    if (condition >= 500 && condition < 600) {
+  String getWeatherIcon(int condition, dynamic sunsetUnix) {
+    DateTime now = DateTime.now();
+    DateTime sunset =
+        new DateTime.fromMillisecondsSinceEpoch(sunsetUnix * 1000);
+
+    if (now.isBefore(sunset)) {
+      print('before');
+    } else {
+      print('after');
+    }
+
+    if (condition >= 300 && condition < 500) {
+      return 'Cloud-Rain-Alt.svg';
+    } else if (condition == 500) {
+      return 'Cloud-Rain-Sun-Alt.svg';
+    } else if (condition > 500 && condition < 600) {
       return 'Cloud-Rain.svg';
-    } else if (condition >= 600 && condition < 700) {
+    } else if (condition == 600) {
+      return 'Cloud-Snow-Alt.svg';
+    } else if (condition > 600 && condition < 700) {
       return 'Cloud-Snow.svg';
     } else if (condition == 800) {
-      return 'Sun.svg';
+      return now.isBefore(sunset) ? 'Sun.svg' : 'Moon.svg';
     } else if (condition == 801) {
       return 'Cloud.svg';
     }

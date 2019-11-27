@@ -50,18 +50,19 @@ class _LocationScreenState extends State<LocationScreen> {
       double temp = weatherData['main']['temp'].toDouble();
       temperature = temp.toInt();
 
-      var condition = weatherData['weather'][0]['id'];
-      weatherIcon = weather.getWeatherIcon(condition);
-
-      description = weatherData['weather'][0]['description'];
-      cityName = weatherData['name'];
-
       var sunriseUnix = weatherData['sys']['sunrise'];
       var sunsetUnix = weatherData['sys']['sunset'];
+
       sunrise = DateFormat('hh:mm a')
           .format(DateTime.fromMillisecondsSinceEpoch(sunriseUnix * 1000));
       sunset = DateFormat('hh:mm a')
           .format(DateTime.fromMillisecondsSinceEpoch(sunsetUnix * 1000));
+
+      var condition = weatherData['weather'][0]['id'];
+      weatherIcon = weather.getWeatherIcon(condition, sunsetUnix);
+
+      description = weatherData['weather'][0]['description'];
+      cityName = weatherData['name'];
 
       // Hourly forecast data.
       //dt = Time of data forecasted, unix, UTC
@@ -70,7 +71,6 @@ class _LocationScreenState extends State<LocationScreen> {
         tempMax = forecast['main']['temp_max'].toDouble();
       }
       //double tempMin = forecastData['list'][0]['main']['temp_min'].toDouble();
-      
     });
   }
 
@@ -91,8 +91,8 @@ class _LocationScreenState extends State<LocationScreen> {
         ],
       ),
       body: Container(
-        // TODO: In case I decide to have background image instead of color
-
+        // TODO: The following commented code is for just in case
+        // I decide to have background image instead of color
         // decoration: BoxDecoration(
         //   image: DecorationImage(
         //     image: AssetImage('images/location_background.jpg'),
@@ -102,6 +102,7 @@ class _LocationScreenState extends State<LocationScreen> {
         //   ),
         // ),
         // constraints: BoxConstraints.expand(),
+
         child: Column(
           children: <Widget>[
             Expanded(
