@@ -25,8 +25,8 @@ class _LocationScreenState extends State<LocationScreen> {
   String sunset;
 
   // Forecast variables
-  double tempMin;
-  double tempMax;
+  List<double> tempMin = [];
+  List<double> tempMax = [];
 
   WeatherModel weather = WeatherModel();
 
@@ -59,7 +59,7 @@ class _LocationScreenState extends State<LocationScreen> {
           .format(DateTime.fromMillisecondsSinceEpoch(sunsetUnix * 1000));
 
       var condition = weatherData['weather'][0]['id'];
-      weatherIcon = weather.getWeatherIcon(condition, sunsetUnix);
+      weatherIcon = weather.getWeatherIcon(condition, sunsetUnix, sunriseUnix);
 
       description = weatherData['weather'][0]['description'];
       cityName = weatherData['name'];
@@ -67,8 +67,8 @@ class _LocationScreenState extends State<LocationScreen> {
       // Hourly forecast data.
       //dt = Time of data forecasted, unix, UTC
       for (var forecast in forecastData['list']) {
-        tempMin = forecast['main']['temp_min'].toDouble();
-        tempMax = forecast['main']['temp_max'].toDouble();
+        tempMin.add(forecast['main']['temp_min'].toDouble());
+        tempMax.add(forecast['main']['temp_max'].toDouble());
       }
       //double tempMin = forecastData['list'][0]['main']['temp_min'].toDouble();
     });
@@ -167,33 +167,37 @@ class _LocationScreenState extends State<LocationScreen> {
                 ],
               ),
             ),
-            Expanded(
-                flex: 2,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        SvgPicture.asset(
-                          'images/$weatherIcon',
-                          color: Colors.white,
-                          width: 50.0,
-                        ),
-                        Text('25'),
-                        Text('18'),
-                      ],
-                    ),
-                  ],
-                )
-                // child: Column(
-                //   children: <Widget>[
-                //     Text('Hourly forecast list'),
-                //   ],
-                // ),
-                ),
+            _buildForecast(),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildForecast() {
+    return Expanded(
+        flex: 2,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                SvgPicture.asset(
+                  'images/$weatherIcon',
+                  color: Colors.white,
+                  width: 50.0,
+                ),
+                Text('25'),
+                Text('18'),
+              ],
+            ),
+          ],
+        )
+        // child: Column(
+        //   children: <Widget>[
+        //     Text('Hourly forecast list'),
+        //   ],
+        // ),
+        );
   }
 }

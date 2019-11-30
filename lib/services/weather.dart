@@ -42,16 +42,14 @@ class WeatherModel {
     return forecastData;
   }
 
-  String getWeatherIcon(int condition, dynamic sunsetUnix) {
+  String getWeatherIcon(int condition, dynamic sunsetUnix, dynamic sunriseUnix) {
     DateTime now = DateTime.now();
     DateTime sunset =
         new DateTime.fromMillisecondsSinceEpoch(sunsetUnix * 1000);
+    DateTime sunrise =
+        new DateTime.fromMillisecondsSinceEpoch(sunriseUnix * 1000);
 
-    if (now.isBefore(sunset)) {
-      print('before');
-    } else {
-      print('after');
-    }
+    bool isDayLight = now.isBefore(sunset) && now.isAfter(sunrise);
 
     if (condition >= 300 && condition < 500) {
       return 'Cloud-Rain-Alt.svg';
@@ -64,8 +62,10 @@ class WeatherModel {
     } else if (condition > 600 && condition < 700) {
       return 'Cloud-Snow.svg';
     } else if (condition == 800) {
-      return now.isBefore(sunset) ? 'Sun.svg' : 'Moon.svg';
-    } else if (condition == 801) {
+      return isDayLight ? 'Sun.svg' : 'Moon.svg';
+    } else if (condition >= 801 && condition < 803) {
+      return isDayLight ? 'Cloud-Sun.svg' : 'Cloud-Moon.svg';
+    } else if (condition >= 803 && condition <= 804) {
       return 'Cloud.svg';
     }
     return 'Sun.svg';
