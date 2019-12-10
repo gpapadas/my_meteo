@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:my_meteo/services/location.dart';
 import 'package:my_meteo/services/networking.dart';
 import 'package:my_meteo/utilities/apikey.dart';
@@ -65,6 +64,28 @@ class WeatherModel {
       return isDayLight ? 'Sun.svg' : 'Moon.svg';
     } else if (condition >= 801 && condition < 803) {
       return isDayLight ? 'Cloud-Sun.svg' : 'Cloud-Moon.svg';
+    } else if (condition >= 803 && condition <= 804) {
+      return 'Cloud.svg';
+    }
+    return 'Sun.svg';
+  }
+
+  String getForecastIcon(int condition) {
+
+    if (condition >= 300 && condition < 500) {
+      return 'Cloud-Rain-Alt.svg';
+    } else if (condition == 500) {
+      return 'Cloud-Rain-Sun-Alt.svg';
+    } else if (condition > 500 && condition < 600) {
+      return 'Cloud-Rain.svg';
+    } else if (condition == 600) {
+      return 'Cloud-Snow-Alt.svg';
+    } else if (condition > 600 && condition < 700) {
+      return 'Cloud-Snow.svg';
+    } else if (condition == 800) {
+      return 'Sun.svg';
+    } else if (condition >= 801 && condition < 803) {
+      return 'Cloud-Sun.svg';
     } else if (condition >= 803 && condition <= 804) {
       return 'Cloud.svg';
     }

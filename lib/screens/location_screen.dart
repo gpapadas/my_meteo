@@ -21,12 +21,19 @@ class _LocationScreenState extends State<LocationScreen> {
   String weatherIcon;
   String cityName;
   String description;
+  double windSpeed;
   String sunrise;
   String sunset;
 
   // Forecast variables
-  List<double> tempMin = [];
-  List<double> tempMax = [];
+  int forecastsCount;
+  List<String> forecastIcon = [];
+  List<int> fTemp = [];
+  List<String> fTime = [];
+  List<String> fDay = [];
+
+  // It has to be glogal so we can use it in _buildForecast().
+  // dynamic forecastData;
 
   WeatherModel weather = WeatherModel();
 
@@ -46,7 +53,7 @@ class _LocationScreenState extends State<LocationScreen> {
         return;
       }
 
-      // Current weather data.
+      // Current weather data
       double temp = weatherData['main']['temp'].toDouble();
       temperature = temp.toInt();
 
@@ -62,15 +69,20 @@ class _LocationScreenState extends State<LocationScreen> {
       weatherIcon = weather.getWeatherIcon(condition, sunsetUnix, sunriseUnix);
 
       description = weatherData['weather'][0]['description'];
+      windSpeed = weatherData['wind']['speed'].toDouble();
       cityName = weatherData['name'];
 
-      // Hourly forecast data.
-      //dt = Time of data forecasted, unix, UTC
+      // 5 day / 3 hour forecast data
+      forecastsCount = forecastData['list'].length;
+
       for (var forecast in forecastData['list']) {
-        tempMin.add(forecast['main']['temp_min'].toDouble());
-        tempMax.add(forecast['main']['temp_max'].toDouble());
+        fTemp.add(forecast['main']['temp'].toDouble().toInt());
+        forecastIcon.add(weather.getForecastIcon(forecast['weather'][0]['id']));
+        fTime.add(DateFormat('hh:mm a').format(
+            DateTime.fromMillisecondsSinceEpoch(forecast['dt'] * 1000)));
+        fDay.add(DateFormat('E').format(
+            DateTime.fromMillisecondsSinceEpoch(forecast['dt'] * 1000)));
       }
-      //double tempMin = forecastData['list'][0]['main']['temp_min'].toDouble();
     });
   }
 
@@ -115,12 +127,28 @@ class _LocationScreenState extends State<LocationScreen> {
                     padding: EdgeInsets.only(left: 15.0, top: 15.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Icon(Icons.location_on),
-                        Text(
-                          '$cityName',
-                          style: kMessageTextStyle,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('now'),
+                            SizedBox(
+                          height: 10.0,
+                        ),
+                            Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.location_on,
+                                  size: 18.0,
+                                ),
+                                Text(
+                                  '$cityName',
+                                  style: kMessageTextStyle,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                         SizedBox(
                           width: 15.0,
@@ -147,7 +175,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       SvgPicture.asset(
                         'images/$weatherIcon',
                         color: Colors.white,
-                        width: 170.0,
+                        width: 150.0,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,6 +188,10 @@ class _LocationScreenState extends State<LocationScreen> {
                             '$description',
                             style: kMessageTextStyle,
                           ),
+                          Text(
+                            '$windSpeed m/s',
+                            style: kMessageTextStyle,
+                          ),
                         ],
                       )
                     ],
@@ -167,37 +199,49 @@ class _LocationScreenState extends State<LocationScreen> {
                 ],
               ),
             ),
-            _buildForecast(),
+            _buildForecast(forecastsCount),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildForecast() {
+  // Returns a list with 5 day / 3 hour forecast data
+  Widget _buildForecast(int forecasts) {
+    //int temperature = forecasts[index]['main']['temp'].toDouble().toInt();
+
     return Expanded(
-        flex: 2,
-        child: ListView(
+      flex: 2,
+      child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            Column(
+          itemCount: forecasts,
+          itemBuilder: (context, index) {
+            return Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Text(
+                  fDay[index],
+                  style: TextStyle(fontSize: 10.0),
+                ),
+                Text(
+                  fTime[index],
+                  style: TextStyle(fontSize: 10.0),
+                ),
                 SvgPicture.asset(
-                  'images/$weatherIcon',
+                  'images/${forecastIcon[index]}',
                   color: Colors.white,
                   width: 50.0,
                 ),
-                Text('25'),
-                Text('18'),
+                Text('${fTemp[index]}°'),
+                //Text('${forecasts[index]['main']['temp_min'].toDouble().toInt()}'),
               ],
-            ),
-          ],
-        )
-        // child: Column(
-        //   children: <Widget>[
-        //     Text('Hourly forecast list'),
-        //   ],
-        // ),
-        );
+            );
+          }),
+      // child: Column(
+      //   children: <Widget>[
+      //     Text('Hourly forecast list'),
+      //   ],
+      // ),
+    );
   }
 }
