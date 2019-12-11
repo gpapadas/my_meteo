@@ -134,8 +134,8 @@ class _LocationScreenState extends State<LocationScreen> {
                           children: <Widget>[
                             Text('now'),
                             SizedBox(
-                          height: 10.0,
-                        ),
+                              height: 10.0,
+                            ),
                             Row(
                               children: <Widget>[
                                 Icon(
@@ -150,21 +150,22 @@ class _LocationScreenState extends State<LocationScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          width: 15.0,
-                        ),
+                        SizedBox(width: 10.0),
                         Icon(
                           Icons.wb_sunny,
-                          size: 20.0,
+                          size: 15.0,
                         ),
                         Icon(
                           Icons.arrow_drop_up,
-                          size: 20.0,
+                          size: 15.0,
                         ),
-                        Text('$sunrise', style: kTimeTextStyle),
+                        Text(
+                          '$sunrise',
+                          style: kTimeTextStyle,
+                        ),
                         Icon(
                           Icons.arrow_drop_down,
-                          size: 20.0,
+                          size: 15.0,
                         ),
                         Text('$sunset', style: kTimeTextStyle),
                       ],

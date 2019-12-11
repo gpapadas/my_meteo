@@ -13,7 +13,7 @@ const kMessageTextStyle = TextStyle(
 
 const kTimeTextStyle = TextStyle(
   //fontFamily: 'Spartan MB',
-  fontSize: 15.0,
+  fontSize: 13.0,
 );
 
 const kButtonTextStyle = TextStyle(
